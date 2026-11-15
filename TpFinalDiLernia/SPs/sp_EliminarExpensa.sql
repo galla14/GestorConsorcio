@@ -1,0 +1,28 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE sp_EliminarExpensa
+	@Id_Expensa UNIQUEIDENTIFIER
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Expensas WHERE IdExpensas = @Id_Expensa)
+			BEGIN
+				return -1;
+			END
+		DELETE dbo.Expensas
+		WHERE IdExpensas = @Id_Expensa
+
+		return 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+
+
+END
+GO

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edificio nombre="Departamento">
+  <Propietario Id_Propietario="1">
+    <Nombre>Brian</Nombre>
+    <Apellido>Di Lernia</Apellido>
+  </Propietario>
+  <Propietario Id_Propietario="2">
+    <Nombre>otro</Nombre>
+    <Apellido>otro</Apellido>
+  </Propietario>
+</Edificio>

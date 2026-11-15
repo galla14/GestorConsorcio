@@ -1,0 +1,19 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE OR ALTER PROCEDURE sp_UsuarioPermisoListar
+	@Id_Usuaruio UNIQUEIDENTIFIER
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+	BEGIN
+		SELECT IdPermiso
+		FROM dbo.UsuarioPermiso
+		WHERE IdUsuario = @Id_Usuaruio
+	END    
+	
+END
+GO

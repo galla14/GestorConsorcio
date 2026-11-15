@@ -1,0 +1,1176 @@
+USE [master]
+GO
+/****** Object:  Database [GestorConsorcio]    Script Date: 28/10/2026 01:10:14 ******/
+CREATE DATABASE [GestorConsorcio]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'GestorConsorcio', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\GestorConsorcio.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'GestorConsorcio_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\GestorConsorcio_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [GestorConsorcio] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [GestorConsorcio].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [GestorConsorcio] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [GestorConsorcio] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [GestorConsorcio] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [GestorConsorcio] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [GestorConsorcio] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [GestorConsorcio] SET  MULTI_USER 
+GO
+ALTER DATABASE [GestorConsorcio] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [GestorConsorcio] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [GestorConsorcio] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [GestorConsorcio] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [GestorConsorcio] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [GestorConsorcio] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [GestorConsorcio] SET QUERY_STORE = OFF
+GO
+USE [GestorConsorcio]
+GO
+/****** Object:  Table [dbo].[Expensas]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Expensas](
+	[IdExpensas] [uniqueidentifier] NOT NULL,
+	[IdUnidad] [uniqueidentifier] NOT NULL,
+	[FechaEmision] [date] NOT NULL,
+	[FechaVto] [date] NOT NULL,
+	[MontoOrdinario] [decimal](12, 2) NOT NULL,
+	[MontoExtraOrd] [decimal](12, 2) NOT NULL,
+	[RecargoXMora] [decimal](12, 2) NOT NULL,
+	[Estado] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Expensas] PRIMARY KEY CLUSTERED 
+(
+	[IdExpensas] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Pago]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pago](
+	[IdPago] [uniqueidentifier] NOT NULL,
+	[IdExpensas] [uniqueidentifier] NOT NULL,
+	[FechaPago] [date] NOT NULL,
+	[Monto] [decimal](12, 2) NOT NULL,
+	[MedioPago] [nvarchar](50) NOT NULL,
+	[NroComprobante] [int] NOT NULL,
+	[Observaciones] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Pago] PRIMARY KEY CLUSTERED 
+(
+	[IdPago] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Permiso]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Permiso](
+	[IdPermiso] [uniqueidentifier] NOT NULL,
+	[Nombre] [nvarchar](50) NOT NULL,
+	[Codigo] [nvarchar](50) NULL,
+	[EsFamilia] [bit] NOT NULL,
+ CONSTRAINT [PK_Permiso] PRIMARY KEY CLUSTERED 
+(
+	[IdPermiso] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PermisoPermiso]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PermisoPermiso](
+	[IdPermisoPadre] [uniqueidentifier] NOT NULL,
+	[IdPermisoHijo] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_PermisoPermiso] PRIMARY KEY CLUSTERED 
+(
+	[IdPermisoPadre] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Propietario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Propietario](
+	[IdPropietario] [uniqueidentifier] NOT NULL,
+	[Nombre] [nvarchar](50) NOT NULL,
+	[Apellido] [nvarchar](50) NOT NULL,
+	[dni] [nvarchar](50) NOT NULL,
+	[NroCelular] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Propietario] PRIMARY KEY CLUSTERED 
+(
+	[IdPropietario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Unidad]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Unidad](
+	[IdUnidad] [uniqueidentifier] NOT NULL,
+	[IdPropietario] [uniqueidentifier] NOT NULL,
+	[Piso] [nvarchar](50) NOT NULL,
+	[Departamento] [varchar](50) NOT NULL,
+	[MedidaDpto] [float] NOT NULL,
+	[AptoAlquiler] [bit] NOT NULL,
+	[Alquilado] [bit] NOT NULL,
+ CONSTRAINT [PK_Unidad] PRIMARY KEY CLUSTERED 
+(
+	[IdUnidad] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Usuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Usuario](
+	[IdUsuario] [uniqueidentifier] NOT NULL,
+	[NombreUsuario] [nvarchar](12) NOT NULL,
+	[Password] [nvarchar](12) NOT NULL,
+	[Rol] [nvarchar](50) NOT NULL,
+	[Activo] [bit] NOT NULL,
+	[IntentosFallidos] [int] NOT NULL,
+	[Bloqueado] [bit] NOT NULL,
+	[FechaAlta] [datetime] NOT NULL,
+ CONSTRAINT [PK_Usuario] PRIMARY KEY CLUSTERED 
+(
+	[IdUsuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UsuarioPermiso]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UsuarioPermiso](
+	[IdUsuario] [uniqueidentifier] NOT NULL,
+	[IdPermiso] [uniqueidentifier] NOT NULL
+) ON [PRIMARY]
+GO
+INSERT [dbo].[Expensas] ([IdExpensas], [IdUnidad], [FechaEmision], [FechaVto], [MontoOrdinario], [MontoExtraOrd], [RecargoXMora], [Estado]) VALUES (N'55ea6b97-885a-4a65-9936-51e4dfc093c7', N'579fc39d-4ecd-4b7f-af70-45d5940bfdbe', CAST(N'2026-10-26' AS Date), CAST(N'2026-10-26' AS Date), CAST(2000.00 AS Decimal(12, 2)), CAST(3500.00 AS Decimal(12, 2)), CAST(1500.00 AS Decimal(12, 2)), N'Pago atrasado')
+GO
+INSERT [dbo].[Expensas] ([IdExpensas], [IdUnidad], [FechaEmision], [FechaVto], [MontoOrdinario], [MontoExtraOrd], [RecargoXMora], [Estado]) VALUES (N'08766c75-747e-482d-9972-7481c8f306d9', N'26aace13-e599-412e-8a8b-bf583e1a78cb', CAST(N'2026-10-01' AS Date), CAST(N'2026-10-10' AS Date), CAST(1000.00 AS Decimal(12, 2)), CAST(1250.00 AS Decimal(12, 2)), CAST(250.00 AS Decimal(12, 2)), N'Pago')
+GO
+INSERT [dbo].[Pago] ([IdPago], [IdExpensas], [FechaPago], [Monto], [MedioPago], [NroComprobante], [Observaciones]) VALUES (N'08a986f6-a467-4d16-be0c-9c900bed2a44', N'08766c75-747e-482d-9972-7481c8f306d9', CAST(N'2026-10-27' AS Date), CAST(3500.00 AS Decimal(12, 2)), N'Transferencia', 12, N'pago ok')
+GO
+INSERT [dbo].[Pago] ([IdPago], [IdExpensas], [FechaPago], [Monto], [MedioPago], [NroComprobante], [Observaciones]) VALUES (N'3cfeaba0-7fa0-484e-ae17-fb247468736c', N'55ea6b97-885a-4a65-9936-51e4dfc093c7', CAST(N'2026-10-09' AS Date), CAST(1000.00 AS Decimal(12, 2)), N'Tarjeta Credito', 50, N'pago ok')
+GO
+INSERT [dbo].[Propietario] ([IdPropietario], [Nombre], [Apellido], [dni], [NroCelular]) VALUES (N'7b36a96d-ea3e-42e5-bbee-62b581befaa0', N'Ivana', N'Ribeiro', N'36451652', N'1125623021')
+GO
+INSERT [dbo].[Propietario] ([IdPropietario], [Nombre], [Apellido], [dni], [NroCelular]) VALUES (N'0b561e3e-19fb-4d16-91db-7f4f1087e107', N'Brian', N'Di Lernia', N'39064300', N'1124613095')
+GO
+INSERT [dbo].[Unidad] ([IdUnidad], [IdPropietario], [Piso], [Departamento], [MedidaDpto], [AptoAlquiler], [Alquilado]) VALUES (N'579fc39d-4ecd-4b7f-af70-45d5940bfdbe', N'7b36a96d-ea3e-42e5-bbee-62b581befaa0', N'3', N'9', 40.840000152587891, 0, 1)
+GO
+INSERT [dbo].[Unidad] ([IdUnidad], [IdPropietario], [Piso], [Departamento], [MedidaDpto], [AptoAlquiler], [Alquilado]) VALUES (N'26aace13-e599-412e-8a8b-bf583e1a78cb', N'0b561e3e-19fb-4d16-91db-7f4f1087e107', N'1', N'2', 400.17001342773438, 1, 1)
+GO
+INSERT [dbo].[Usuario] ([IdUsuario], [NombreUsuario], [Password], [Rol], [Activo], [IntentosFallidos], [Bloqueado], [FechaAlta]) VALUES (N'a0e0ed11-c978-4c99-9361-31d20e766bb7', N'ICR74878', N'23111992', N'admin', 1, 0, 0, CAST(N'2026-10-27T21:50:02.927' AS DateTime))
+GO
+INSERT [dbo].[Usuario] ([IdUsuario], [NombreUsuario], [Password], [Rol], [Activo], [IntentosFallidos], [Bloqueado], [FechaAlta]) VALUES (N'ec97be1a-369e-4bac-93fa-a226ba0dacaf', N'superadmin', N'superadmin', N'superadmin', 1, 0, 0, CAST(N'2026-10-27T20:14:55.477' AS DateTime))
+GO
+ALTER TABLE [dbo].[Expensas]  WITH CHECK ADD  CONSTRAINT [FK_Expensas_Unidad] FOREIGN KEY([IdUnidad])
+REFERENCES [dbo].[Unidad] ([IdUnidad])
+GO
+ALTER TABLE [dbo].[Expensas] CHECK CONSTRAINT [FK_Expensas_Unidad]
+GO
+ALTER TABLE [dbo].[Pago]  WITH CHECK ADD  CONSTRAINT [FK_Pago_Expensas] FOREIGN KEY([IdExpensas])
+REFERENCES [dbo].[Expensas] ([IdExpensas])
+GO
+ALTER TABLE [dbo].[Pago] CHECK CONSTRAINT [FK_Pago_Expensas]
+GO
+ALTER TABLE [dbo].[PermisoPermiso]  WITH CHECK ADD  CONSTRAINT [FK_PermisoPermiso_Permiso] FOREIGN KEY([IdPermisoHijo])
+REFERENCES [dbo].[Permiso] ([IdPermiso])
+GO
+ALTER TABLE [dbo].[PermisoPermiso] CHECK CONSTRAINT [FK_PermisoPermiso_Permiso]
+GO
+ALTER TABLE [dbo].[PermisoPermiso]  WITH CHECK ADD  CONSTRAINT [FK_PermisoPermiso_Permiso1] FOREIGN KEY([IdPermisoPadre])
+REFERENCES [dbo].[Permiso] ([IdPermiso])
+GO
+ALTER TABLE [dbo].[PermisoPermiso] CHECK CONSTRAINT [FK_PermisoPermiso_Permiso1]
+GO
+ALTER TABLE [dbo].[Unidad]  WITH CHECK ADD  CONSTRAINT [FK_Unidad_Propietario] FOREIGN KEY([IdPropietario])
+REFERENCES [dbo].[Propietario] ([IdPropietario])
+GO
+ALTER TABLE [dbo].[Unidad] CHECK CONSTRAINT [FK_Unidad_Propietario]
+GO
+ALTER TABLE [dbo].[UsuarioPermiso]  WITH CHECK ADD  CONSTRAINT [FK_UsuarioPermiso_Permiso] FOREIGN KEY([IdPermiso])
+REFERENCES [dbo].[Permiso] ([IdPermiso])
+GO
+ALTER TABLE [dbo].[UsuarioPermiso] CHECK CONSTRAINT [FK_UsuarioPermiso_Permiso]
+GO
+ALTER TABLE [dbo].[UsuarioPermiso]  WITH CHECK ADD  CONSTRAINT [FK_UsuarioPermiso_Usuario] FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[Usuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[UsuarioPermiso] CHECK CONSTRAINT [FK_UsuarioPermiso_Usuario]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_BajaLogicaUsuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_BajaLogicaUsuario]
+	@NombreUsuario NVARCHAR(12)
+AS
+BEGIN
+	
+	IF NOT EXISTS(SELECT * FROM dbo.Usuario WHERE NombreUsuario = @NombreUsuario)
+		BEGIN
+			return -1;
+		END
+
+	SET NOCOUNT ON;
+	UPDATE dbo.Usuario
+	SET Activo = 0
+	WHERE NombreUsuario = @NombreUsuario
+
+	return 1;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarExpensas]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ConsultarExpensas]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT  e.IdExpensas,
+	        e.FechaEmision,
+	        e.FechaVto,
+	        e.MontoOrdinario,
+	        e.MontoExtraOrd,
+	        e.RecargoXMora,
+	        e.Estado,
+	        u.IdUnidad,
+	        u.Piso,
+	        u.Departamento,
+	        u.MedidaDpto,
+	        u.AptoAlquiler,
+	        u.Alquilado,
+	        p.IdPropietario,
+	        p.Nombre,
+	        p.Apellido,
+	        p.Dni,
+	        p.NroCelular
+	FROM    dbo.Expensas e
+	        INNER JOIN dbo.Unidad u      ON u.IdUnidad = e.IdUnidad
+	        INNER JOIN dbo.Propietario p ON p.IdPropietario = u.IdPropietario;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarPagos]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_ConsultarPagos]
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+    SELECT  *
+	FROM    dbo.Pago pg
+			INNER JOIN dbo.Expensas expen ON expen.idExpensas = pg.IdExpensas
+	        INNER JOIN dbo.Unidad u      ON u.IdUnidad = expen.IdUnidad
+	        INNER JOIN dbo.Propietario p ON p.IdPropietario = u.IdPropietario;
+			
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarPropietarios]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ConsultarPropietarios]
+	
+AS
+BEGIN
+	select * from dbo.Propietario
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarPropietarioXDni]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ConsultarPropietarioXDni]
+	@Dni NVARCHAR (50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT * FROM dbo.Propietario WHERE dni = @Dni
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarRol]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[sp_ConsultarRol]
+	@NombreUsuario NVARCHAR(12)
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+    SELECT Rol FROM dbo.Usuario WHERE NombreUsuario=@NombreUsuario;
+		
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarTodosUsuarios]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE   PROCEDURE [dbo].[sp_ConsultarTodosUsuarios]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM   dbo.Usuario
+    ORDER BY NombreUsuario;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarUsuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ConsultarUsuario]
+	@NombreUsuario NVARCHAR(50),
+	@Password NVARCHAR (50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN
+		IF EXISTS (SELECT * FROM dbo.Usuario WHERE NombreUsuario = @NombreUsuario AND Password = @Password)
+			BEGIN
+				RETURN 1;
+			END
+		RETURN 0;
+	END
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ConsultarUsuarioIniciarSesion]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE   PROCEDURE [dbo].[sp_ConsultarUsuarioIniciarSesion]
+    @NombreUsuario NVARCHAR(50),
+    @Password      NVARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @PassReal   NVARCHAR(12),
+            @Intentos   INT,
+            @Activo     BIT,
+            @Bloqueado  BIT,
+            @RolUsuario NVARCHAR(50);
+
+    BEGIN TRY
+        SELECT @PassReal   = Password,
+               @Intentos   = IntentosFallidos,
+               @Activo     = Activo,
+               @Bloqueado  = Bloqueado,
+               @RolUsuario = Rol
+        FROM   dbo.Usuario
+        WHERE  NombreUsuario = @NombreUsuario;
+
+        
+        IF @PassReal IS NULL OR @Activo = 0
+            RETURN -1;
+
+        
+        IF @Bloqueado = 1
+            RETURN -2;
+
+        
+        IF @PassReal <> @Password COLLATE Latin1_General_CS_AS
+        BEGIN
+            
+            IF @RolUsuario = 'superadmin'
+                RETURN -1;
+
+            SET @Intentos = @Intentos + 1;
+
+            
+            IF @Intentos >= 3
+            BEGIN
+                UPDATE dbo.Usuario
+                SET    IntentosFallidos = @Intentos, Bloqueado = 1
+                WHERE  NombreUsuario = @NombreUsuario;
+
+                RETURN -3;
+            END
+
+            
+            UPDATE dbo.Usuario
+            SET    IntentosFallidos = @Intentos
+            WHERE  NombreUsuario = @NombreUsuario;
+
+            RETURN -1;
+        END
+
+        
+        UPDATE dbo.Usuario
+        SET    IntentosFallidos = 0
+        WHERE  NombreUsuario = @NombreUsuario;
+
+        IF @RolUsuario = 'superadmin'
+            RETURN 1;
+
+        RETURN 2;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CrearUsuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_CrearUsuario]
+	@Id_Usuario UNIQUEIDENTIFIER,
+	@NombreUsuario NVARCHAR(12),
+	@Password NVARCHAR(12),
+	@Rol NVARCHAR(50),
+	@Activo bit,
+	@IntentosFallidos INT,
+	@Bloqueado bit,
+	@FechaAlta DateTime
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+    BEGIN TRY
+		IF EXISTS(SELECT * FROM dbo.Usuario WHERE NombreUsuario = @NombreUsuario)
+			BEGIN
+				RETURN -1;
+			END
+
+		INSERT INTO dbo.Usuario
+		VALUES(@Id_Usuario,@NombreUsuario,@Password,@Rol,@Activo,@IntentosFallidos,@Bloqueado,@FechaAlta)
+		RETURN 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_DesbloqueoUsuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_DesbloqueoUsuario]
+	@NombreUsuario NVARCHAR(12)
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+	IF EXISTS(SELECT * FROM dbo.Usuario WHERE NombreUsuario = @NombreUsuario)
+		BEGIN
+			UPDATE dbo.Usuario
+			SET Bloqueado = 0, IntentosFallidos = 0
+			WHERE NombreUsuario=@NombreUsuario
+		END
+
+    
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_EliminarExpensa]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_EliminarExpensa]
+	@Id_Expensa UNIQUEIDENTIFIER
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Expensas WHERE IdExpensas = @Id_Expensa)
+			BEGIN
+				return -1;
+			END
+		DELETE dbo.Expensas
+		WHERE IdExpensas = @Id_Expensa
+
+		return 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_EliminarPago]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_EliminarPago]
+	@Id_Pago UNIQUEIDENTIFIER
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Pago WHERE IdPago = @Id_Pago)
+			BEGIN
+				RETURN -1;
+			END
+
+		DELETE dbo.Pago
+		WHERE IdPago = @Id_Pago
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_EliminarPropietario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_EliminarPropietario]
+	@Id_Propietario UNIQUEIDENTIFIER
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Propietario WHERE IdPropietario = @Id_Propietario)
+			BEGIN
+				SELECT -1;
+				RETURN;
+			END
+		IF EXISTS (SELECT * FROM dbo.Unidad WHERE IdPropietario = @Id_Propietario)
+			BEGIN
+				SELECT -2;
+				RETURN;
+			END
+
+			DELETE dbo.Propietario
+			WHERE IdPropietario = @Id_Propietario;
+			SELECT 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_EliminarUsuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_EliminarUsuario]
+	@Id_Usuario UNIQUEIDENTIFIER
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Usuario WHERE IdUsuario = @Id_Usuario)
+			BEGIN
+				RETURN -1;
+			END
+		DELETE dbo.Usuario
+		WHERE IdUsuario = @Id_Usuario
+
+		RETURN 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ExpensasConsultar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ExpensasConsultar]
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM dbo.Expensas
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_InsertarExpensa]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_InsertarExpensa]
+	@Id_Expensa UNIQUEIDENTIFIER,
+	@Id_Unidad UNIQUEIDENTIFIER,
+	@FechaEmision DateTime,
+	@FechaVto DateTime,
+	@MontoOrdinario DECIMAL(12,2),
+	@MontoExtraOrd DECIMAL(12,2),
+	@RecargoXMora DECIMAL(12,2),
+	@Estado NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF EXISTS (SELECT * FROM dbo.Expensas WHERE IdExpensas = @Id_Expensa)
+			BEGIN 
+				return -1;
+			END
+
+			INSERT INTO dbo.Expensas
+			VALUES (@Id_Expensa, @Id_Unidad,  @FechaEmision, @FechaVto, @MontoOrdinario, @MontoExtraOrd, @RecargoXMora, @Estado)
+			return 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_InsertarPago]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_InsertarPago]
+	@Id_Pago UNIQUEIDENTIFIER,
+	@Id_Expensas UNIQUEIDENTIFIER,
+	@Fecha_pago Datetime,
+	@Monto DECIMAL(12,2),
+	@MedioPago NVARCHAR(50),
+	@NroComprobante INT,
+	@Observaciones NVARCHAR(50)
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	BEGIN TRY
+		IF EXISTS(SELECT * FROM dbo.Pago WHERE IdPago = @Id_Pago)
+			BEGIN
+				RETURN -1;
+			END
+
+		INSERT dbo.Pago
+		VALUES(@Id_Pago, @Id_Expensas, @Fecha_pago, @Monto, @MedioPago, @NroComprobante, @Observaciones)
+
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_InsertarPropietario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE   PROCEDURE [dbo].[sp_InsertarPropietario]
+	@Id_Propietario UNIQUEIDENTIFIER,
+	@Nombre         NVARCHAR(50),
+	@Apellido       NVARCHAR(50),
+	@Dni            NVARCHAR(15),
+	@NroCelular     NVARCHAR(20)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	BEGIN TRY
+		-- Id duplicado
+		IF EXISTS (SELECT 1 FROM dbo.Propietario WHERE IdPropietario = @Id_Propietario)
+			RETURN -1;
+
+		-- DNI duplicado
+		IF EXISTS (SELECT 1 FROM dbo.Propietario WHERE Dni = @Dni)
+			RETURN -2;
+
+		INSERT INTO dbo.Propietario (IdPropietario, Nombre, Apellido, Dni, NroCelular)
+		VALUES (@Id_Propietario, @Nombre, @Apellido, @Dni, @NroCelular);
+
+		RETURN 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ModificarExpensa]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ModificarExpensa]
+	@Id_Expensa UNIQUEIDENTIFIER,
+	@Id_Unidad UNIQUEIDENTIFIER,
+	@FechaEmision datetime,
+	@FechaVto datetime,
+	@MontoOrdinario DECIMAL (12,2),
+	@MontoExtraordinario DECIMAL (12,2),
+	@RecargoXMora DECIMAL (12,2),
+	@Estado NVARCHAR(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	BEGIN TRY
+		BEGIN
+			IF NOT EXISTS(SELECT * FROM dbo.Expensas WHERE IdExpensas = @Id_Expensa)
+				RETURN -1;
+		END
+
+		BEGIN
+			UPDATE dbo.Expensas
+			SET IdUnidad=@Id_Unidad, FechaEmision = @FechaEmision, FechaVto = @FechaVto, MontoOrdinario = @MontoOrdinario,
+				MontoExtraOrd = @MontoExtraordinario, RecargoXMora = @RecargoXMora, Estado = @Estado
+			WHERE IdExpensas = @Id_Expensa
+
+			RETURN 1;
+		END
+
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ModificarNombreUsuario]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create   PROCEDURE [dbo].[sp_ModificarNombreUsuario]
+	@Id_Usuario uniqueidentifier,
+	@NombreUsuario NVARCHAR(12)
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		
+		IF NOT EXISTS (SELECT 1 FROM dbo.Usuario WHERE IdUsuario = @Id_Usuario)
+			RETURN -1;
+
+		
+		IF EXISTS (SELECT 1 FROM dbo.Usuario
+		           WHERE NombreUsuario = @NombreUsuario AND IdUsuario <> @Id_Usuario)
+			RETURN -2;
+
+		
+		IF LEN(@NombreUsuario) NOT BETWEEN 8 AND 12
+			RETURN -3;
+
+		UPDATE dbo.Usuario
+		SET    NombreUsuario = @NombreUsuario
+		WHERE  IdUsuario = @Id_Usuario;
+
+		RETURN 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ModificarPago]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_ModificarPago]
+	@Id_Pago UNIQUEIDENTIFIER,
+	@Id_Expensa UNIQUEIDENTIFIER,
+	@FechaPago DATETIME,
+	@Monto DECIMAL (12,2),
+	@MedioPago NVARCHAR(50),
+	@NroComprobante INT,
+	@Observaciones NVARCHAR(50)
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Pago WHERE IdPago = @Id_Pago)
+			BEGIN
+				RETURN -1;
+			END
+
+		UPDATE dbo.Pago
+		SET
+			IdExpensas = @Id_Expensa,
+			FechaPago = @FechaPago,
+			Monto = @Monto,
+			MedioPago = @MedioPago,
+			NroComprobante = @NroComprobante,
+			Observaciones = @Observaciones
+		WHERE IdPago = @Id_Pago
+	END TRY
+	BEGIN CATCH
+		THROW
+	END CATCH
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ModificarPassword]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ModificarPassword]
+	@Id_Usuario uniqueidentifier,
+	@NombreUsuario NVARCHAR(12),
+	@Password NVARCHAR(12)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Usuario WHERE (NombreUsuario = @NombreUsuario AND IdUsuario=@Id_Usuario))
+			BEGIN
+				RETURN -1;
+			END
+
+		UPDATE dbo.Usuario
+		SET Password = @Password
+		WHERE IdUsuario = @Id_Usuario
+	END TRY
+	BEGIN CATCH
+		THROW
+	END CATCH
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ModificarPropietarioXId]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_ModificarPropietarioXId]
+	@Id_Propietario UNIQUEIDENTIFIER,
+	@Nombre NVARCHAR(50),
+	@Apellido NVARCHAR(50),
+	@Dni NVARCHAR(50),
+	@NroCelular NVARCHAR(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(select * from dbo.Propietario where IdPropietario = @Id_Propietario)
+			BEGIN
+				return -2;
+			END
+
+		UPDATE dbo.Propietario
+		SET 
+			Nombre = @Nombre, 
+			Apellido =@Apellido, 
+			dni = @Dni,
+			NroCelular = @NroCelular
+		WHERE IdPropietario = @Id_Propietario
+
+		return 1;
+
+	END TRY
+	BEGIN CATCH 
+		THROW;
+	END CATCH
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_PropietarioModificar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_PropietarioModificar]
+	@Id_Propietario UNIQUEIDENTIFIER,
+	@Nombre NVARCHAR(50),
+	@Apellido NVARCHAR(50),
+	@dni NVARCHAR (50),
+	@NroCelular NVARCHAR(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS(SELECT * FROM dbo.Propietario WHERE IdPropietario = @Id_Propietario)
+			BEGIN
+				SELECT -1;
+				RETURN;
+			END
+		UPDATE dbo.Propietario 
+		SET
+			Nombre = @Nombre,
+			Apellido = @Apellido,
+			dni = @dni,
+			NroCelular = @NroCelular
+		WHERE idPropietario = @Id_Propietario
+
+		SELECT 1;
+		RETURN;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_UnidadConsultar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_UnidadConsultar]
+AS
+BEGIN
+	SELECT  u.IdUnidad,
+            u.Piso,
+            u.Departamento,
+            u.MedidaDpto,
+            u.AptoAlquiler,
+            u.Alquilado,
+            p.IdPropietario,
+            p.Nombre,
+            p.Apellido,
+            p.Dni,
+            p.NroCelular
+    FROM    dbo.Unidad u
+            INNER JOIN dbo.Propietario p ON p.IdPropietario = u.IdPropietario;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_UnidadEliminar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_UnidadEliminar] 
+	@Id_Unidad UNIQUEIDENTIFIER
+AS
+BEGIN
+SET NOCOUNT ON;
+	BEGIN TRY
+		DELETE dbo.Unidad
+		WHERE IdUnidad = @Id_Unidad;
+		SELECT 1
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_UnidadInsertar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_UnidadInsertar] 
+	@Id_Unidad UNIQUEIDENTIFIER,
+	@Id_Propietario UNIQUEIDENTIFIER,
+	@Piso NVARCHAR (50),
+	@Departamento NVARCHAR (50),
+	@MedidaDpto FLOAT,
+	@AptoAlquiler bit,
+	@Alquilado bit
+AS
+BEGIN	
+	SET NOCOUNT ON;
+    
+	BEGIN TRY
+		IF EXISTS(SELECT * FROM dbo.Unidad WHERE IdUnidad = @Id_Unidad)
+			BEGIN
+				return -1;
+			END
+		IF NOT EXISTS(SELECT * FROM dbo.Propietario where IdPropietario = @Id_Propietario)
+			BEGIN 
+				RETURN -2;
+			END
+			
+			INSERT INTO dbo.Unidad (IdUnidad, IdPropietario, Piso, Departamento, MedidaDpto, AptoAlquiler, Alquilado)
+			VALUES (@Id_Unidad, @Id_Propietario, @Piso, @Departamento, @MedidaDpto, @AptoAlquiler, @Alquilado);
+			RETURN 1;
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_UnidadModificar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_UnidadModificar]
+	@Id_Unidad UNIQUEIDENTIFIER,
+	@Id_Propietario UNIQUEIDENTIFIER,
+	@Piso NVARCHAR (50),
+	@Departamento NVARCHAR(50),
+	@MedidaDpto float,
+	@AptoAlquiler bit,
+	@Alquilado bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM dbo.Unidad WHERE IdUnidad = @Id_Unidad)
+			BEGIN
+				RETURN -2;
+			END
+		ELSE IF NOT EXISTS (SELECT * FROM dbo.Propietario WHERE IdPropietario = @Id_Propietario)
+			BEGIN
+				RETURN -2;
+			END
+
+		ELSE
+			BEGIN
+				UPDATE dbo.Unidad
+				set 
+					IdPropietario = @Id_Propietario,
+					Piso = @Piso,
+					Departamento = @Departamento,
+					MedidaDpto = @MedidaDpto,
+					AptoAlquiler = @AptoAlquiler,
+					Alquilado = @Alquilado
+				where IdUnidad = @Id_Unidad
+
+			RETURN 1;
+			END
+		END TRY
+		BEGIN CATCH
+			THROW;
+		END CATCH
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_UsuarioInsertar]    Script Date: 28/10/2026 01:10:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_UsuarioInsertar]
+	@Id_Usuario UNIQUEIDENTIFIER,
+	@NombreUsuario NVARCHAR(12),
+	@Password NVARCHAR(12),
+	@Rol NVARCHAR(50),
+	@Activo bit,
+	@Intentos int,
+	@Bloqueado bit,
+	@FechaAlta DATETIME
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+	BEGIN TRY
+		IF EXISTS (SELECT * FROM dbo.Usuario WHERE NombreUsuario = @NombreUsuario)
+			BEGIN
+				RETURN -1;
+			END
+
+		INSERT INTO dbo.Usuario
+		VALUES (@Id_Usuario, @NombreUsuario, @Password,@Rol, @Activo,@Intentos,@Bloqueado,@FechaAlta);
+		RETURN 1;
+
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+USE [master]
+GO
+ALTER DATABASE [GestorConsorcio] SET  READ_WRITE 
+GO

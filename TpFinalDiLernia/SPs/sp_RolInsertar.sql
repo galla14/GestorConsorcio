@@ -1,0 +1,26 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_RolInsertar
+    @Id_Permiso UNIQUEIDENTIFIER,
+    @Nombre     NVARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	BEGIN TRY
+		IF EXISTS (SELECT 1 FROM dbo.Permiso WHERE Nombre = @Nombre)
+			RETURN -1;
+
+		INSERT INTO dbo.Permiso (IdPermiso, Nombre, Codigo, EsFamilia)
+		VALUES (@Id_Permiso, @Nombre, NULL, 1);
+		RETURN 1;
+
+	END TRY
+	BEGIN CATCH
+		THROW
+	END CATCH
+END
+GO

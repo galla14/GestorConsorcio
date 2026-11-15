@@ -1,0 +1,16 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE OR ALTER PROCEDURE sp_ConsultarRol
+	@NombreUsuario NVARCHAR(12)
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+    SELECT Rol FROM dbo.Usuario WHERE NombreUsuario=@NombreUsuario;
+		
+END
+GO
